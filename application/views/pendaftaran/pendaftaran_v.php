@@ -18,6 +18,11 @@
     .table th {
         vertical-align: middle;
     }
+    .form-row{
+        max-width: 500px;
+        min-width: 500px;
+        margin-left: 3%;
+    }
 </style>
 
 <div class="page-header">
@@ -56,6 +61,24 @@
                     </div>
                 </div>
             </div>
+            <!-- Formulir Pendaftaran Seminar -->
+<form action="<?php echo site_url('pendaftaran/register_all_students_to_seminar'); ?>" method="post">
+    <!-- Opsi Pilihan Seminar -->
+    <div class="form-row pt-2">
+        <label for="seminar_id">Pilih Seminar:</label>
+        <!-- Ganti dengan opsi yang sesuai -->
+        <select name="seminar_id" id="seminar_id" class="form-control">
+            <?php foreach ($seminar as $item): ?>
+                <option value="<?= $item->id_seminar; ?>"><?= $item->nama_seminar; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <!-- Tombol untuk Mendaftarkan Semua Mahasiswa -->
+    <div class="form-row pt-2">
+        <button type="submit" class="btn btn-primary">Daftarkan Semua Mahasiswa</button>
+    </div>
+</form>
+
             <div class="card-body">
                 <div class="dt-responsive table-responsive">
                     <table id="table-style-hover" class="table table-striped table-hover table-bordered nowrap">

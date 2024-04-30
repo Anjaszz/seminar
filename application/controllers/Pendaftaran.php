@@ -187,7 +187,47 @@ class Pendaftaran extends CI_Controller
             redirect('pendaftaran');
         }
     }
-
+    public function register_all_students_to_seminar()
+    {
+        // Ambil ID seminar dari input POST
+        $seminar_id = $this->input->post('seminar_id');
+    
+        // Validasi ID seminar
+        if (!$seminar_id) {
+            $this->session->set_flashdata('error', 'ID seminar tidak valid.');
+            redirect('pendaftaran');
+        }
+    
+        // Panggil model Seminar_model untuk mendapatkan daftar semua mahasiswa
+        $all_students = $this->mhs->lihat_data();
+    
+        // Jika tidak ada mahasiswa
+        if (empty($all_students)) {
+            $this->session->set_flashdata('error', 'Tidak ada mahasiswa yang tersedia untuk didaftarkan.');
+            redirect('pendaftaran');
+        }
+    
+        // Lakukan pendaftaran semua mahasiswa ke seminar yang dipilih
+        foreach ($all_students as $student) {
+            // Buat data pendaftaran
+            $data = array(
+                'id_seminar' => $seminar_id,
+                'id_mahasiswa' => $student->id_mahasiswa,
+                'tgl_daftar' => date('Y-m-d'),
+                'jam_daftar' => date('H:i:s'),
+                'id_stsbyr' => 1, // Tentukan status pembayaran sesuai kebutuhan
+                'id_metode' => 1 // Tentukan metode pembayaran sesuai kebutuhan
+            );
+    
+            // Lakukan pendaftaran
+            $this->pf->insert_data($data);
+        }
+    
+        // Setelah selesai, tampilkan pesan berhasil
+        $this->session->set_flashdata('success', 'Semua mahasiswa berhasil didaftarkan ke dalam seminar.');
+        redirect('pendaftaran');
+    }
+    
     public function addaction()
     {
 

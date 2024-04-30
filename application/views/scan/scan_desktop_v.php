@@ -1,6 +1,6 @@
 <style>
     #buttonScan {
-        display: none;
+        display: block;
     }
 </style>
 <div class="page-header">
@@ -66,7 +66,7 @@
 <script type="text/javascript">
     window.addEventListener('load', function() {
         let selectedDeviceId;
-        let audio = new Audio("assets/audio/beep.mp3");
+        let audio = new Audio("beep.mp3");
         const codeReader = new ZXing.BrowserMultiFormatReader()
         console.log('ZXing code reader initialized')
         codeReader.getVideoInputDevices()
@@ -120,29 +120,9 @@
     let halaman = '<?= base_url() ?>';
 </script>
 <script>
+let audio = new Audio("assets/audio/beep.mp3");
     $("#buttonScan").click(function() {
-
-        let idPeserta = $('#result').val();
-        let idSeminar = $('#idSeminar').val();
-        console.log(idPeserta);
-        let url = halaman + 'scan/proses_kehadiran';
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: {
-                id: idPeserta,
-                seminar: idSeminar
-            },
-            beforeSend: function(msg) {
-                $('#showResult').html('<h1><i class="fa fa-spin fa-refresh" /></h1>')
-            },
-            success: function(msg) {
-                $('#showResult').html(msg);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert('error');
-            }
-        });
-
+audio.play();
+       
     });
 </script>

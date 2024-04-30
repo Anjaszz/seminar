@@ -114,9 +114,34 @@ class Mahasiswa_model extends CI_Model
 
     function delete_data($id)
     {
+        $this->db->trans_start(); // Memulai transaksi database
+    
+        // Hapus data dari tabel pertama
         $this->db->where('id_mahasiswa', $id);
-        return $this->db->delete('mahasiswa');
+        $this->db->delete('mahasiswa');
+    
+        // Hapus data dari tabel kedua
+        $this->db->where('id_mahasiswa', $id);
+        $this->db->delete('presensi_seminar');
+    
+        // Hapus data dari tabel ketiga
+        $this->db->where('id_mahasiswa', $id);
+        $this->db->delete('pendaftaran_seminar');
+    
+        $this->db->trans_complete(); // Menyelesaikan transaksi database
+    
+        // Periksa apakah transaksi berhasil
+        if ($this->db->trans_status() === FALSE) {
+            // Jika transaksi gagal, maka lakukan rollback
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            // Jika transaksi berhasil, maka commit transaksi
+            $this->db->trans_commit();
+            return true;
+        }
     }
+    
 }
 
 /* End of file Mahasiswa_model.php */
